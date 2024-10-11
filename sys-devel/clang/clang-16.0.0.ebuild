@@ -330,7 +330,7 @@ multilib_src_configure() {
 			-DCLANG_INCLUDE_DOCS=${build_docs}
 		)
 	fi
-	if multilib_native_use extra; then
+	if multilib_is_native_abi; then
 		mycmakeargs+=(
 			-DLLVM_EXTERNAL_CLANG_TOOLS_EXTRA_SOURCE_DIR="${WORKDIR}"/clang-tools-extra
  			-DCLANG_TOOLS_EXTRA_INCLUDE_DOCS=${build_docs}
@@ -443,7 +443,7 @@ multilib_src_install() {
 	rm -rf "${ED}"/usr/include || die
 	mv "${ED}"/usr/lib/llvm/${SLOT}/include "${ED}"/usr/include || die
 	mv "${ED}"/usr/lib/llvm/${SLOT}/$(get_libdir)/clang "${ED}"/usr/include/clangrt || die
-	if multilib_is_native_abi; then
+	if use extra; then
 		# don't wrap clang-tidy headers, the list is too long
 		# (they're fine for non-native ABI but enabling the targets is problematic)
 		mv "${ED}"/usr/include/clang-tidy "${T}/" || die
